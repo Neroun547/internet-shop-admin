@@ -1,0 +1,52 @@
+.mt-50px {
+    margin-top: 50px !important;
+}
+
+.mt-75px {
+    margin-top: 75px !important;
+}
+
+.mt-150px {
+    margin-top: 150px !important;
+}
+.padding-50px {
+    padding: 50px !important;
+}
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+.input-number {
+    border: 1px solid #000;
+}
+
+.input-default {
+    border: 1px solid #000;
+}
+
+.w-90 {
+    width: 90%;
+}
+
+.bottom-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+@media screen and (max-width: 600px) {
+    .bottom-actions {
+        flex-direction: column;
+    }
+
+    .bottom-actions button {
+        display: block;
+        width: 200px;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    .bottom-actions a {
+        margin-left: 0 !important;
+    }
+}
