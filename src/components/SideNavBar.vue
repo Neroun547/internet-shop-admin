@@ -1,9 +1,12 @@
 <template>
+  <v-app-bar class="bg-white" v-if="isAuthenticated">
+    <v-app-bar-nav-icon variant="text" @click="isNavOpen = !isNavOpen"></v-app-bar-nav-icon>
+  </v-app-bar>
   <v-card v-if="isAuthenticated" style="z-index: 100;">
     <v-navigation-drawer
+      v-model="isNavOpen"
       rail
       expand-on-hover
-
       class="bg-yellow-accent-4"
     >
       <v-list density="compact" nav>
@@ -61,6 +64,11 @@
 import useUserStore2 from "../stores/user.js";
 
 export default {
+  data() {
+    return {
+      isNavOpen: true,
+    }
+  },
   methods: {
     exit() {
       const store = useUserStore2();

@@ -1,10 +1,17 @@
 <template>
   <v-app>
     <SideNavBar />
-    <router-view />
+    <div class="wrapper__page">
+      <router-view />
+    </div>
   </v-app>
 </template>
 <script setup>
   import "./styles/main.css";
   import SideNavBar from "@/components/SideNavBar.vue";
 </script>
+<style scoped>
+  .wrapper__page {
+    margin-top: 75px;
+  }
+</style>
