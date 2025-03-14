@@ -64,7 +64,7 @@ import useUserStore2 from "../stores/user.js";
 export default {
   data() {
     return {
-      isNavOpen: true
+      isNavOpen: false
     }
   },
   methods: {
