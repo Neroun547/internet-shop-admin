@@ -5,8 +5,9 @@
   <v-card v-if="isAuthenticated" style="z-index: 100;">
     <v-navigation-drawer
       v-model="isNavOpen"
-      rail
+      :rail="rail"
       expand-on-hover
+      @click="rail = !rail"
       class="bg-yellow-accent-4"
     >
       <v-list density="compact" nav>
@@ -67,6 +68,7 @@ export default {
   data() {
     return {
       isNavOpen: true,
+      rail: true
     }
   },
   methods: {
