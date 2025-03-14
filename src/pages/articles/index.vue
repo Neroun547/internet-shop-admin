@@ -1,20 +1,20 @@
 <template>
   <div class="wrapper__articles mt-50px">
-    <h2 class="ml-5 d-block">Статті</h2>
+    <h2 class="ml-5 mb-5 d-block articles-logo">Статті</h2>
     <RouterLink to="/admin/articles/add-article">
-      <v-btn class="ml-auto mb-5 d-block bg-yellow-accent-4">Додати статтю <v-icon icon="mdi-plus"></v-icon></v-btn>
+      <v-btn class="ml-auto mb-5 d-block bg-yellow-accent-4 add-article-btn">Додати статтю <v-icon icon="mdi-plus"></v-icon></v-btn>
     </RouterLink>
     <v-list>
       <v-list-item v-for="article in articles" v-bind:key="article.id">
         <v-card class="bg-grey-lighten-4">
-          <v-card-title>Назва:{{ article.name }}</v-card-title>
-          <v-card-title>Дата:{{ article.created_at }}</v-card-title>
-          <v-card-actions class="mt-5">
-            <div class="bottom-actions">
-              <v-btn class="bg-red" @click="deleteArticleByFilename(article.filename)"><v-icon icon="mdi-delete"></v-icon></v-btn>
+          <v-card-title class="article-name text-wrap">Назва:{{ article.name }}</v-card-title>
+          <v-card-title class="article-date text-wrap">Дата:{{ article.created_at }}</v-card-title>
+          <v-card-actions class="mt-10">
+            <div class="d-flex justify-space-between w-100">
+              <v-icon icon="mdi-delete" class="text-red" @click="deleteArticleByFilename(article.filename)"></v-icon>
               <v-spacer></v-spacer>
               <RouterLink :to="'/admin/articles/' + article.filename">
-                <v-btn class="bg-yellow-accent-4">Редагувати</v-btn>
+                <v-icon icon="mdi-pencil"></v-icon>
               </RouterLink>
             </div>
           </v-card-actions>
@@ -76,5 +76,20 @@ export default {
     display: block;
     width: 80%;
     margin: 0 auto;
+  }
+
+  @media screen and (max-width: 750px) {
+    .articles-logo {
+      font-size: 18px;
+    }
+    .add-article-btn {
+      font-size: 12px;
+    }
+    .article-name {
+      font-size: 16px;
+    }
+    .article-date {
+      font-size: 16px;
+    }
   }
 </style>

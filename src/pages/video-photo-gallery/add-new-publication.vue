@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper__add-new-publication">
-    <h2 class="mb-2">Додати нову публікацію</h2>
+    <h2 class="mb-2 add-new-publication-logo">Додати нову публікацію</h2>
     <v-card class="pa-5">
     <v-form @submit="savePublication">
       <v-carousel v-if="files.length">
@@ -90,5 +90,11 @@ export default {
   img {
     background-size: contain !important;
     background-repeat: no-repeat !important;
+  }
+  @media screen and (max-width: 750px) {
+    .add-new-publication-logo {
+      font-size: 18px;
+      text-align: center;
+    }
   }
 </style>

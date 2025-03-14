@@ -1,18 +1,18 @@
 <template>
   <div class="wrapper__edit-rubric">
-    <h2>Редагувати рубрику</h2>
+    <h2 class="wrapper__edit-rubric-title">Редагувати рубрику</h2>
     <v-form @submit="editRubric" class="mt-5">
       <v-text-field v-model="rubricName" label="Назва рубрики" variant="outlined"></v-text-field>
-      <v-btn class="d-block ml-auto bg-yellow-accent-4" @click="addRubricType">Додати тип <v-icon icon="mdi-plus"/></v-btn>
-      <label class="mb-3 d-block">Типи товарів:</label>
-      <v-row
-        class="mt-3"
+      <v-btn class="d-block ml-auto bg-yellow-accent-4 add-type-btn" @click="addRubricType">Додати тип <v-icon icon="mdi-plus"/></v-btn>
+      <label class="d-block products-types-label">Типи товарів:</label>
+      <div
+        class="mt-3 d-flex w-100 justify-space-between align-center"
         v-bind:key="type.id" v-for="type in rubricTypes"
       >
         <v-text-field v-model="type.name" label="Тип товару" variant="outlined"></v-text-field>
-        <v-btn class="bg-red ml-1" @click="deleteRubricType(type.id)"><v-icon icon="mdi-delete"/></v-btn>
-      </v-row>
-      <v-btn type="submit" class="bg-yellow-accent-4 ml-auto d-block mt-5">Зберегти</v-btn>
+        <button class="ml-3 delete-product-type-btn" @click="deleteRubricType(type.id)"><v-icon icon="mdi-delete"/></button>
+      </div>
+      <v-btn type="submit" class="bg-yellow-accent-4 ml-auto d-block mt-5 save-changes-btn">Зберегти</v-btn>
 
       <v-alert v-if="saveSuccessfulMessage" class="bg-green mt-3">{{saveSuccessfulMessage}}</v-alert>
       <v-alert v-if="saveErrorMessage" class="bg-red mt-3">{{saveErrorMessage}}</v-alert>
@@ -76,6 +76,32 @@
     width: 60%;
     display: block;
     margin: 0 auto;
-    margin-top: 100px;
+    margin-top: 50px;
+  }
+  .wrapper__edit-rubric-title {
+    margin-bottom: 40px;
+  }
+  .products-types-label {
+    display: block;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .delete-product-type-btn {
+    background-color: transparent;
+    color: #F44336;
+  }
+  @media screen and (max-width: 750px) {
+    .wrapper__edit-rubric {
+      width: 90%;
+    }
+    .wrapper__edit-rubric-title {
+      font-size: 18px;
+    }
+    .save-changes-btn {
+      font-size: 11px;
+    }
+    .add-type-btn {
+      font-size: 11px;
+    }
   }
 </style>

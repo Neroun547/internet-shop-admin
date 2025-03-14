@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper__video-photo-gallery">
     <RouterLink :to="'/admin/video-photo-gallery/add-new-publication'">
-      <v-btn class="bg-yellow-accent-4 d-block ml-auto">Додати відео або фото <v-icon icon="mdi-plus"></v-icon></v-btn>
+      <v-btn class="bg-yellow-accent-4 d-block ml-auto gallery-add-publication-btn">Додати відео або фото <v-icon icon="mdi-plus"></v-icon></v-btn>
     </RouterLink>
-    <h2>Галерея</h2>
+    <h2 class="mt-5 gallery-logo">Галерея</h2>
     <v-row class="mt-5">
       <v-col
         v-for="item in videoPhoto"
@@ -23,10 +23,10 @@
           <v-card-subtitle>{{ item.theme }}</v-card-subtitle>
 
           <v-card-actions class="mt-5">
-            <v-btn class="bg-red" @click="deletePublicationById(item.id)"><v-icon icon="mdi-delete"></v-icon></v-btn>
+            <v-icon icon="mdi-delete" @click="deletePublicationById(item.id)" class="text-red"></v-icon>
             <v-spacer></v-spacer>
             <RouterLink :to="'/admin/video-photo-gallery/' + item.id">
-              <v-btn class="bg-yellow-accent-4">Редагувати</v-btn>
+              <v-btn class="bg-yellow-accent-4 gallery-edit-btn">Редагувати</v-btn>
             </RouterLink>
           </v-card-actions>
         </v-card>
@@ -105,5 +105,16 @@ export default {
     max-width: 300px;
     max-height: 300px;
     width: 100%;
+  }
+  @media screen and (max-width: 750px) {
+    .gallery-add-publication-btn {
+      font-size: 12px;
+    }
+    .gallery-logo {
+      font-size: 18px;
+    }
+    .gallery-edit-btn {
+      font-size: 12px;
+    }
   }
 </style>
