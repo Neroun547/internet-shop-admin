@@ -1,4 +1,5 @@
 <template>
+  <GoBack go-back-url="/admin/partners/" />
   <div class="wrapper__edit-partner">
     <v-form class="d-flex flex-column mt-150px">
       <v-text-field variant="outlined" v-model="partnerName" label="Ім'я партнера"/>
@@ -15,8 +16,10 @@
 </template>
 <script>
 import Api from "@/lib/api.js";
+import GoBack from "@/components/GoBack.vue";
 
 export default {
+  components: {GoBack},
   data() {
     return {
       partnerName: "",

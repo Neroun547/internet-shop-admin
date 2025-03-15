@@ -1,4 +1,5 @@
 <template>
+  <GoBack />
   <div class="wrapper__upload-product mt-75px">
     <v-card class="pa-5">
       <v-form>
@@ -43,8 +44,10 @@
 <script>
 import Api from "@/lib/api.js";
 import {API_URL} from "@/constants.js";
+import GoBack from "@/components/GoBack.vue";
 
 export default {
+  components: {GoBack},
   data() {
     return {
       selectProductItems: [

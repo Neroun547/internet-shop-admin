@@ -1,4 +1,5 @@
 <template>
+  <GoBack />
   <div class="wrapper__add-new-publication">
     <h2 class="mb-2 edit-publication-title">Редагувати публікацію</h2>
     <v-card class="pa-5">
@@ -27,8 +28,10 @@
 <script>
 import {API_URL} from "@/constants.js";
 import Api from "@/lib/api.js";
+import GoBack from "@/components/GoBack.vue";
 
 export default {
+  components: {GoBack},
   data() {
     return {
       publicationName: "",

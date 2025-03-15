@@ -1,4 +1,5 @@
 <template>
+  <GoBack />
   <div class="wrapper__edit-rubric">
     <h2 class="wrapper__edit-rubric-title">Редагувати рубрику</h2>
     <v-form @submit="editRubric" class="mt-5">
@@ -21,8 +22,10 @@
 </template>
 <script>
   import Api from "@/lib/api.js";
+  import GoBack from "@/components/GoBack.vue";
 
   export default {
+    components: {GoBack},
     data() {
       return {
         rubricName: "",

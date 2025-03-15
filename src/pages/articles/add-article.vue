@@ -1,4 +1,5 @@
 <template>
+  <GoBack />
   <main class="wrapper__article-editor">
     <v-text-field variant="outlined" label="Назва статті" v-model="articleName"></v-text-field>
     <v-text-field variant="outlined" label="Тема статті" v-model="articleTheme"></v-text-field>
@@ -19,6 +20,7 @@
 </template>
 <script setup>
 import Editor from '@tinymce/tinymce-vue'
+import GoBack from "@/components/GoBack.vue";
 </script>
 <script>
 import Api from "@/lib/api.js";

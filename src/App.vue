@@ -9,6 +9,7 @@
 <script setup>
   import "./styles/main.css";
   import SideNavBar from "@/components/SideNavBar.vue";
+  import GoBack from "@/components/GoBack.vue";
 </script>
 <style scoped>
   .wrapper__page {

@@ -1,4 +1,5 @@
 <template>
+  <GoBack />
   <div class="wrapper__card">
     <v-card>
       <v-card-title>Замовлення:</v-card-title>
@@ -52,8 +53,10 @@
 </template>
 <script>
 import Api from "@/lib/api.js";
+import GoBack from "@/components/GoBack.vue";
 
 export default {
+  components: {GoBack},
   data() {
     return {
       products: [],

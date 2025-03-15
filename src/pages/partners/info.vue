@@ -1,4 +1,5 @@
 <template>
+  <GoBack go-back-url="/admin/partners/" />
   <div class="wrapper__info-partner mt-50px">
     <h2>Замовлення партнера {{ partnerName }}</h2>
     <Orders
@@ -14,9 +15,10 @@
 <script>
 import Orders from "@/components/Orders.vue";
 import Api from "@/lib/api.js";
+import GoBack from "@/components/GoBack.vue";
 
 export default {
-  components: {Orders},
+  components: {GoBack, Orders},
   data() {
     return {
       selectedTab: "",
