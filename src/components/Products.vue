@@ -14,6 +14,7 @@
         <v-card-title>{{product.name}}</v-card-title>
         <v-card-subtitle class="text-center">{{product.type}}</v-card-subtitle>
         <v-card-subtitle class="text-center mt-3">Ціна: {{product.price}}</v-card-subtitle>
+        <v-card-subtitle class="text-center mt-3">Порядковий номер: {{product.num}}</v-card-subtitle>
         <v-card-subtitle class="mt-3 text-center">
           <span v-if="product.available" class="text-green">Є в наявності</span>
           <span v-if="!product.available" class="text-red">Немає в наявності</span>
