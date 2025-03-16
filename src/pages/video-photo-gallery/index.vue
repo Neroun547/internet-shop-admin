@@ -14,7 +14,7 @@
         sm="12"
       >
         <v-card class="card-publication">
-          <video v-if="item.previewFileVideo" controls preload="metadata">
+          <video v-if="item.previewFileVideo" controls preload="metadata" :type="item.mimeType" style="max-width: 300px;">
             <source :src="api_url + '/gallery/' + item.previewFile">
           </video>
           <v-img :src="api_url + '/gallery/' + item.previewFile" v-if="!item.previewFileVideo"/>
