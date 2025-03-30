@@ -40,6 +40,11 @@
         >
           <v-list-item prepend-icon="mdi-account-group" title="Партнери" value="partners"></v-list-item>
         </RouterLink>
+        <RouterLink
+          to="/admin/settings"
+        >
+          <v-list-item prepend-icon="mdi-cog" title="Налаштування" value="settings"></v-list-item>
+        </RouterLink>
         <v-list-item
           prepend-icon="mdi-exit-to-app"
           title="Вихід"

@@ -69,6 +69,7 @@ export default {
         this.userStore.setRole(response.data.role);
         this.userStore.setToken(response.data.token);
         this.userStore.setIsAuthenticated(true);
+        this.userStore.setId(response.data.id);
 
         window.location.href = "/admin/orders";
       } catch(e) {
