@@ -6,6 +6,7 @@
     <div
       ref="sentinel"
       class="observer"
+      style="height: 10px;"
     ></div>
   </div>
 </template>
