@@ -1,14 +1,4 @@
 <template>
-  <v-dialog v-model="isDeleteProductDialogOpen" max-width="600">
-    <v-card>
-      <v-card-title>Ви дійсно хочете видалити {{activeDeleteProductName}}?</v-card-title>
-      <v-card-actions class="mt-5">
-        <v-btn @click="isDeleteProductDialogOpen = false" class="bg-yellow-accent-4">Ні</v-btn>
-        <v-spacer></v-spacer>
-        <v-btn @click="deleteProduct" class="bg-red">Так</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
   <div class="wrapper__products mt-5">
     <RouterLink to="/admin/products/add-product">
       <v-btn class="d-block ml-auto bg-yellow-accent-4">Додати товар <v-icon icon="mdi-plus"></v-icon></v-btn>
@@ -67,7 +57,7 @@
         </v-col>
       </v-row>
     </v-form>
-    <Products :products="products" />
+    <Products :products="products" @delete-product="(productId) => deleteProduct(productId)" />
     <div
       ref="sentinel"
       class="observer"
@@ -76,8 +66,10 @@
 </template>
 <script>
 import Api from "@/lib/api.js";
+import Products from "@/components/Products.vue";
 
 export default {
+  components: {Products},
   data() {
     return {
       products: [],
@@ -101,16 +93,16 @@ export default {
       priceFrom: 0,
       priceTo: 0,
       filtersApplied: false,
-      isDeleteProductDialogOpen: false,
       activeDeleteProductName: ""
     }
   },
   methods: {
-    deleteProduct() {
-      Api.delete("/admin/products/" + this.activeDeleteProductId);
+    deleteProduct(productId) {
+      console.log(productId);
+      Api.delete("/admin/products/" + productId);
 
       this.isDeleteProductDialogOpen = false;
-      this.products = this.products.filter(product => product.id !== this.activeDeleteProductId);
+      this.products = this.products.filter(product => product.id !== productId);
       this.loadMoreOptions.skip -= 1;
     },
     getProductsUrl(loadMore=false) {
@@ -176,12 +168,6 @@ export default {
 
       this.rubricsTypesSelectItems = data.map(rubric => ({ title: rubric.name, value: rubric.id }));
       this.rubricsTypesSelectItems.unshift({ title: "Всі", value: 0 });
-    },
-    openDeleteProductDialog(productId, productName) {
-      this.activeDeleteProductId = productId;
-
-      this.activeDeleteProductName = productName;
-      this.isDeleteProductDialogOpen = true;
     },
     createObserver() {
       const options = { threshold: 1.0 };

@@ -1,4 +1,14 @@
 <template>
+  <v-dialog v-model="isDeleteProductDialogOpen" max-width="600">
+    <v-card>
+      <v-card-title>Ви дійсно хочете видалити {{activeDeleteProductName}}?</v-card-title>
+      <v-card-actions class="mt-5">
+        <v-btn @click="isDeleteProductDialogOpen = false" class="bg-yellow-accent-4">Ні</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn @click="deleteProduct" class="bg-red">Так</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
   <v-row class="mt-5">
     <v-col
       v-for="product in products"
@@ -39,6 +49,26 @@ export default {
       type: Array,
       required: true
     }
+  },
+  data() {
+    return {
+      isDeleteProductDialogOpen: false,
+      activeDeleteProductId: null,
+      activeDeleteProductName: ""
+    }
+  },
+  methods: {
+    deleteProduct() {
+      this.$emit("delete-product", this.activeDeleteProductId);
+
+      this.isDeleteProductDialogOpen = false;
+    },
+    openDeleteProductDialog(productId, productName) {
+      this.activeDeleteProductId = productId;
+
+      this.activeDeleteProductName = productName;
+      this.isDeleteProductDialogOpen = true;
+    },
   },
   computed: {
     api_url: {
