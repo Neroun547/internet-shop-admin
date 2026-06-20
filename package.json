@@ -13,7 +13,7 @@
     "@mdi/font": "7.4.47",
     "@tinymce/tinymce-vue": "^5.1.1",
     "@vueuse/core": "^13.0.0",
-    "axios": "^1.8.2",
+    "axios": "^1.18.0",
     "roboto-fontface": "*",
     "vue": "^3.4.31",
     "vuetify": "^3.6.14"

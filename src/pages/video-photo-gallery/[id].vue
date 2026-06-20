@@ -3,7 +3,7 @@
   <div class="wrapper__add-new-publication">
     <h2 class="mb-2 edit-publication-title">Редагувати публікацію</h2>
     <v-card class="pa-5">
-      <v-form @submit="savePublication">
+      <v-form @submit="editPublication">
         <v-carousel v-if="files.length">
           <v-carousel-item v-for="file in files" v-bind:key="file.id">
             <v-img :src="file.src" v-if="file.type.includes('image')" />
@@ -25,77 +25,87 @@
     </v-card>
   </div>
 </template>
-<script>
-import {API_URL} from "@/constants.js";
+<script setup>
+import { API_URL } from "@/constants.js";
 import Api from "@/lib/api.js";
 import GoBack from "@/components/GoBack.vue";
+import { useRoute } from "vue-router";
 
-export default {
-  components: {GoBack},
-  data() {
+const route = useRoute();
+
+const publicationName = ref("");
+const publicationTheme = ref("");
+const publicationDescription = ref("");
+const uploadedSuccessfulMessage = ref("");
+const uploadedErrorMessage = ref("");
+const files = ref([]);
+
+async function getPublication() {
+  const data = (
+    await Api.get(`/video-photo-gallery/${route.params.id}`)
+  ).data;
+
+  publicationName.value = data.name;
+  publicationTheme.value = data.theme;
+  publicationDescription.value = data.description;
+
+  files.value = data.files.map(function (file) {
     return {
-      publicationName: "",
-      publicationTheme: "",
-      publicationDescription: "",
-      uploadedSuccessfulMessage: "",
-      uploadedErrorMessage: "",
-      files: []
-    }
-  },
-  mounted() {
-    this.getPublication();
-  },
-  methods: {
-    async getPublication() {
-      const data = (await Api.get("/video-photo-gallery/" + this.$route.params.id)).data;
-
-      this.publicationName = data.name;
-      this.publicationTheme = data.theme;
-      this.publicationDescription = data.description;
-      this.files = data.files.map(file => ({
-        src: API_URL + "/gallery/" + file.filename,
-        type: file.type
-      }));
-    },
-    async savePublication(e) {
-      e.preventDefault();
-
-      this.uploadedSuccessfulMessage = "";
-      this.uploadedErrorMessage = "";
-
-      const formData = new FormData();
-
-      for(let i = 0; i < this.files.length; i++) {
-        formData.append("files", this.files[i].file);
-      }
-      formData.append("name", this.publicationName);
-      formData.append("theme", this.publicationTheme);
-      formData.append("description", this.publicationDescription);
-
-      fetch(API_URL + "/api/admin/video-photo-gallery/" + this.$route.params.id, {
-        method: "PATCH",
-        headers: {
-          authorization: localStorage.getItem("token"),
-        },
-        body: formData
-      })
-        .then((response) => {
-          if(response.ok) {
-            this.uploadedSuccessfulMessage = "Завантажено успішно";
-          } else {
-            this.uploadedErrorMessage = "Помилка";
-          }
-        })
-        .catch(() => {
-          this.uploadedErrorMessage = "Помилка";
-        })
-    },
-    changeFile(e) {
-      const data = Array.from(e.target.files);
-      this.files = data.map(item => ({ src: URL.createObjectURL(item), file: item, type: item.type, id: Date.now() }));
-    }
-  }
+      src: API_URL + "/gallery/" + file.filename,
+      type: file.type,
+    };
+  });
 }
+
+async function editPublication(e) {
+  e.preventDefault();
+
+  uploadedSuccessfulMessage.value = "";
+  uploadedErrorMessage.value = "";
+
+  const formData = new FormData();
+
+  for (let i = 0; i < files.value.length; i++) {
+    formData.append("files", files.value[i].file);
+  }
+
+  formData.append("name", publicationName.value);
+  formData.append("theme", publicationTheme.value);
+  formData.append("description", publicationDescription.value);
+
+  fetch(`${API_URL}/api/admin/video-photo-gallery/${route.params.id}`, {
+    method: "PATCH",
+    headers: {
+      authorization: localStorage.getItem("token"),
+    },
+    body: formData,
+  })
+    .then(function (response) {
+      if (response.ok) {
+        uploadedSuccessfulMessage.value = "Завантажено успішно";
+      } else {
+        uploadedErrorMessage.value = "Помилка";
+      }
+    })
+    .catch(function () {
+      uploadedErrorMessage.value = "Помилка";
+    });
+}
+
+function changeFile(e) {
+  const data = Array.from(e.target.files);
+
+  files.value = data.map(function (item) {
+    return {
+      src: URL.createObjectURL(item),
+      file: item,
+      type: item.type,
+      id: Date.now(),
+    };
+  });
+}
+
+onMounted(getPublication);
 </script>
 <style scoped>
 .wrapper__add-new-publication {

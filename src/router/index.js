@@ -25,6 +25,7 @@ import EditArticle from "@/pages/articles/[filename].vue";
 import VideoPhotoGallery from "@/pages/video-photo-gallery/index.vue";
 import AddNewPublication from "@/pages/video-photo-gallery/add-new-publication.vue";
 import VideoPhotoGalleryItem from "@/pages/video-photo-gallery/[id].vue";
+import Settings from "@/pages/settings/index.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -113,6 +114,11 @@ const router = createRouter({
       path: "/admin/video-photo-gallery/:id",
       name: "edit-video",
       component: VideoPhotoGalleryItem
+    },
+    {
+      path: "/admin/settings",
+      name: "settings",
+      component: Settings
     }
   ],
 })

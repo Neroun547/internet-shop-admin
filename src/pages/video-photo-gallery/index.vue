@@ -1,9 +1,15 @@
 <template>
   <div class="wrapper__video-photo-gallery">
+    <h2 class="gallery-logo">Галерея</h2>
     <RouterLink :to="'/admin/video-photo-gallery/add-new-publication'">
-      <v-btn class="bg-yellow-accent-4 d-block ml-auto gallery-add-publication-btn">Додати відео або фото <v-icon icon="mdi-plus"></v-icon></v-btn>
+      <v-btn
+        class="bg-yellow-accent-4 d-block ml-auto gallery-add-publication-btn"
+        >Додати відео або фото <v-icon icon="mdi-plus"></v-icon
+      ></v-btn>
     </RouterLink>
-    <h2 class="mt-5 gallery-logo">Галерея</h2>
+    <div v-if="!videoPhoto.length" class="mt-5">
+      <h2 class="text-center no-data-text">Відео та фото поки що немає ...</h2>
+    </div>
     <v-row class="mt-5">
       <v-col
         v-for="item in videoPhoto"
@@ -14,107 +20,122 @@
         sm="12"
       >
         <v-card class="card-publication">
-          <video v-if="item.previewFileVideo" controls preload="metadata" :type="item.mimeType" style="max-width: 300px;">
-            <source :src="api_url + '/gallery/' + item.previewFile">
+          <video
+            v-if="item.previewFileVideo"
+            controls
+            preload="metadata"
+            :type="item.mimeType"
+            style="max-width: 300px"
+          >
+            <source :src="API_URL + '/gallery/' + item.previewFile" />
           </video>
-          <v-img :src="api_url + '/gallery/' + item.previewFile" v-if="!item.previewFileVideo"/>
+          <v-img
+            :src="API_URL + '/gallery/' + item.previewFile"
+            v-if="!item.previewFileVideo"
+          />
 
           <v-card-title>{{ item.name }}</v-card-title>
           <v-card-subtitle>{{ item.theme }}</v-card-subtitle>
 
           <v-card-actions class="mt-5">
-            <v-icon icon="mdi-delete" @click="deletePublicationById(item.id)" class="text-red"></v-icon>
+            <v-icon
+              icon="mdi-delete"
+              @click="deletePublicationById(item.id)"
+              class="text-red"
+            ></v-icon>
             <v-spacer></v-spacer>
             <RouterLink :to="'/admin/video-photo-gallery/' + item.id">
-              <v-btn class="bg-yellow-accent-4 gallery-edit-btn">Редагувати</v-btn>
+              <v-btn class="bg-yellow-accent-4 gallery-edit-btn"
+                >Редагувати</v-btn
+              >
             </RouterLink>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
-    <div
-      ref="sentinel"
-      class="observer"
-    ></div>
+    <div ref="sentinel" class="observer"></div>
   </div>
 </template>
-<script>
+<script setup>
 import Api from "@/lib/api.js";
-import {API_URL} from "@/constants.js";
+import { API_URL } from "@/constants.js";
 
-export default {
-  data() {
-    return {
-      videoPhoto: [],
-      loadMoreOptions: {
-        take: 12,
-        skip: 12
-      }
-    }
-  },
-  async mounted() {
-    await this.getVideoPhoto();
-    this.createObserver();
-  },
-  methods: {
-    async deletePublicationById(id) {
-      await Api.delete("/admin/video-photo-gallery/" + id);
+const videoPhoto = ref([]);
 
-      this.videoPhoto = this.videoPhoto.filter(publication => publication.id !== id);
-      this.loadMoreOptions.skip -= 1;
-    },
-    async getVideoPhoto() {
-      this.videoPhoto = (await Api.get("/video-photo-gallery/")).data;
-    },
-    async loadMorePublication() {
-      this.videoPhoto.push(...(await Api.get(`/video-photo-gallery/load-more/?take=${this.loadMoreOptions.take}&skip=${this.loadMoreOptions.skip}`)).data);
+const loadMoreOptions = ref({
+  take: 12,
+  skip: 12,
+});
 
-      this.loadMoreOptions.skip += 12;
-    },
-    createObserver() {
-      const options = { threshold: 1.0 };
-      const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          this.loadMorePublication();
-        }
-      }, options);
-      observer.observe(this.$refs.sentinel);
-    },
-  },
-  computed: {
-    api_url: {
-      get() {
-        return API_URL;
-      }
-    }
-  },
+const sentinel = ref(null);
+
+async function deletePublicationById(id) {
+  await Api.delete(`/admin/video-photo-gallery/${id}`);
+
+  videoPhoto.value = videoPhoto.value.filter(function (publication) {
+    return publication.id !== id;
+  });
+
+  loadMoreOptions.value.skip -= 1;
 }
+
+async function getVideoPhoto() {
+  videoPhoto.value = (await Api.get("/video-photo-gallery/")).data;
+}
+
+async function loadMorePublication() {
+  videoPhoto.value.push(
+    ...(
+      await Api.get(
+        `/video-photo-gallery/load-more/?take=${loadMoreOptions.value.take}&skip=${loadMoreOptions.value.skip}`,
+      )
+    ).data,
+  );
+
+  loadMoreOptions.value.skip += 12;
+}
+
+function createObserver() {
+  const options = { threshold: 1.0 };
+
+  const observer = new IntersectionObserver(function (entries) {
+    if (entries[0].isIntersecting) {
+      loadMorePublication();
+    }
+  }, options);
+
+  observer.observe(sentinel.value);
+}
+
+onMounted(async function () {
+  await getVideoPhoto();
+  createObserver();
+});
 </script>
 <style scoped>
-  .wrapper__video-photo-gallery {
-    display: block;
-    margin: 0 auto;
-    margin-top: 50px;
-    width: 80%;
+.wrapper__video-photo-gallery {
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+}
+.card-publication img {
+  max-width: 300px;
+  width: 100%;
+}
+.card-publication video {
+  max-width: 300px;
+  max-height: 300px;
+  width: 100%;
+}
+@media screen and (max-width: 750px) {
+  .gallery-add-publication-btn {
+    font-size: 12px;
   }
-  .card-publication img {
-    max-width: 300px;
-    width: 100%;
+  .gallery-logo {
+    font-size: 18px;
   }
-  .card-publication video {
-    max-width: 300px;
-    max-height: 300px;
-    width: 100%;
+  .gallery-edit-btn {
+    font-size: 12px;
   }
-  @media screen and (max-width: 750px) {
-    .gallery-add-publication-btn {
-      font-size: 12px;
-    }
-    .gallery-logo {
-      font-size: 18px;
-    }
-    .gallery-edit-btn {
-      font-size: 12px;
-    }
-  }
+}
 </style>

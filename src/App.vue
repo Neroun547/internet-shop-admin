@@ -1,18 +1,21 @@
 <template>
   <v-app>
-    <SideNavBar />
-    <div class="wrapper__page">
-      <router-view />
-    </div>
+    <v-card style="min-height: 100vh;">
+      <v-layout style="min-height: 100vh;">
+        <TopBar />
+        <v-main class="wrapper__page">
+          <router-view />
+        </v-main>
+      </v-layout>
+    </v-card>
   </v-app>
 </template>
 <script setup>
-  import "./styles/main.css";
-  import SideNavBar from "@/components/SideNavBar.vue";
-  import GoBack from "@/components/GoBack.vue";
+import "./styles/main.css";
+import TopBar from "./components/TopBar.vue";
 </script>
 <style scoped>
-  .wrapper__page {
-    margin-top: 75px;
-  }
+.wrapper__page {
+  margin-top: 40px;
+}
 </style>

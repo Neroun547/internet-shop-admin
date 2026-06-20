@@ -34,6 +34,11 @@ a {
     justify-content: space-between;
     width: 100%;
 }
+
+.no-data-text {
+    font-size: 24px;
+}
+
 @media screen and (max-width: 600px) {
     .bottom-actions {
         flex-direction: column;
@@ -48,5 +53,11 @@ a {
 
     .bottom-actions a {
         margin-left: 0 !important;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .no-data-text {
+        font-size: 18px;
     }
 }
